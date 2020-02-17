@@ -7,6 +7,14 @@ router.get('/login', (req, res) => {
 
   const database = admin.firestore();
 
+  if (userName === null || passWord === null) {
+    return res.json({
+      respcode: 1,
+      respmsg: 'Invalid Parameters',
+      respdata: null
+    })
+  }
+
   database.collection('users').where('username', '==', userName).where('password', '==', passWord).get()
     .then(result => {
       if (result.empty) {
@@ -31,6 +39,61 @@ router.get('/login', (req, res) => {
         respdata: null
       })
     })
+
+  /**
+   * Promise
+   */
+
+  // const userPromise = new Promise((resolve, reject) => {
+  //   database.collection('users').where('username', '==', userName).where('password', '==', passWord).get()
+  //     .then(result => {
+  //       if (result.empty) {
+  //         resolve('Invalid Credentials')
+  //       } else {
+  //         const data = result.docs[0].data();
+  //         resolve(data)
+  //       }
+  //     })
+  //     .catch(err => {
+  //       reject(err)
+  //     })
+  // })
+
+  // userPromise
+  //   .then(res => {
+  //     console.log(res)
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   })
+
+  //-------------------------------------------------------------------------------------------------//
+
+  /**
+   * Async Await
+   */
+
+  // const userAsync = async () => {
+  //   await database.collection('users').where('username', '==', userName).where('password', '==', passWord).get()
+  //     .then(result => {
+  //       if (result.empty) {
+  //         console.log('Invalid Credentials')
+  //       } else {
+  //         const data = result.docs[0].data();
+  //         console.log(data)
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err)
+  //     })
+
+  //   console.log('HAHAHAHA')
+  // }
+
+  // userAsync()
+
+  //-------------------------------------------------------------------------------------------------//
+
 })
 
 module.exports = router;
